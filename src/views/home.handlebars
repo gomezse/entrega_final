@@ -1,0 +1,85 @@
+<div class="row">
+    <section class="h-100 h-custom" style="background-color: #eee;">
+        <div class="container h-100 py-5">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    <div class="card shopping-cart" style="border-radius: 15px;">
+                        <div class="card-body text-black">
+
+                            <div class="row">
+                                <div class="col-lg-12 px-5 py-4">
+
+                                    <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Listado de Productos</h3>
+
+                                    {{#each product}}
+                                    <div class="d-flex align-items-center mb-6">
+                                        <div class="flex-shrink-0">
+                                            <img src="{{thumbnails}}" class="img-fluid" style="width: 150px;"
+                                                alt="Generic placeholder image">
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            {{!-- //agregar al carrito el producto. --}}
+                                            {{!-- <a href="api/carts/65393af63031ce561a8d198f/product/{{_id}}" class="float-end text-black"><i onclick="alert('aca deberia agregar al carrito.')" class="fas fa-shopping-cart"></i></a> --}}
+                                            <a href="" class="float-end text-black"><i onclick="alert('aca deberia agregar al carrito.')" class="fas fa-shopping-cart"></i></a>
+                                            <h5 class="text-primary">{{title}}</h5>
+
+                                            <div class="d-flex align-items-center">
+                                                <p class="fw-bold mb-0 me-5 pe-3">ID:{{_id}}</p>
+                                                <p class="fw-bold mb-0 me-5 pe-3">{{description}}</p>
+                                                <p class="fw-bold mb-0 me-5 pe-3">Código: {{code}}</p>
+                                                <p class="fw-bold mb-0 me-5 pe-3">Precio: $ {{price}}</p>
+                                                <p class="fw-bold mb-0 me-5 pe-3">Categoria: {{category}}</p>
+                                                 <p class="fw-bold mb-0 me-5 pe-3">Stock: {{stock}}</p>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{/each}}
+                                    <hr class="mb-4" style="height: 2px; background-color: #1266f1; opacity: 1;">
+                                </div>
+
+                                </form>
+                                <nav>
+                                    <ul class="pagination center">
+                                        {{#if hasPrev}}
+                                        <li class="page-item">
+                                            <button type="button" class="btn btn-primary">
+                                                <a class="page-link" style="color:#fff" href="{{prev}}">Previous</a>
+                                        </li>
+                                        </button>
+
+                                        {{else}}
+                                        <li class="page-item">
+                                            <button type="button" class="btn btn-primary" disabled>
+                                                <a class="page-link" style="color:#fff" href="">Previous</a>
+                                        </li>
+                                        </button>
+                                        </li>
+                                        {{/if}}
+
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="http://localhost:8080/products?limit={{#if limit}}{{limit}}{{else}}1{{/if}}&page={{page}}&sort={{#if sort}}{{sort}}{{else}}1{{/if}}">{{page}}</a>
+                                        </li>
+
+                                        {{#if hasNext}}
+                                        <button type="button" class="btn btn-primary">
+                                            <a class="page-link" style="color:#fff" href="{{next}}">Next</a></li>
+                                        </button>
+                                        {{else}}
+                                        <button type="button" class="btn btn-primary" style="" disabled>
+                                            <a class="page-link" style="color:#fff" href="">Next</a></li>
+                                        </button>
+                                        {{/if}}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</section>

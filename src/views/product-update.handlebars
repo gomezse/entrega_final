@@ -1,0 +1,56 @@
+<h3>Update Product</h3>
+<form id="updateProductForm" action="http://localhost:8080/api/products/{{product._id}}" method="post">
+    <input type="hidden" name="id" value="{{product._id}}">
+
+    Title: <input type="text" name="title" value="{{product.title}}" id="title">
+    <br>
+    Description: <input type="text" name="description" value="{{product.description}}" id="description">
+    <br>
+    Code: <input type="text" name="code" id="code" value="{{product.code}}">
+    <br>
+    Price: <input type="number" name="price" id="price" value="{{product.price}}">
+    <br>
+    Stock: <input type="number" name="stock" id="stock" value="{{product.stock}}">
+    <br>
+    Category: <input type="text" name="category" id="category" value="{{product.category}}">
+    <br>
+
+    <input type="submit" value="update">
+    <p>Ejemplo:
+        "title":"Smartphone",
+        "description":"Samsung",
+        "code":"port12",
+        "price":3500,
+        "stock":5,
+        "category":"celulares",
+        "thumbnails":["https://cdn-iibml.nitrocdn.com/mIsZFyqRlkiNfZRugfIBKtdyexDtafZx/assets/images/optimized/rev-99e5996/image/cache/catalog/products_2023/samsung-galaxy-a14-black-1-800x800.png"],
+        "owner":"asdasd@gmail.com"
+    </p>
+
+</form>
+
+
+
+<script>
+    document.getElementById('updateProductForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const url = this.action;
+
+        fetch(url, {
+            method: 'PUT',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Respuesta del servidor:', data);
+                alert('producto modificado');
+
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+                alert('no se pudo modificar el producto. Error: '.error);
+            });
+    });
+</script>

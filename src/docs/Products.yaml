@@ -1,0 +1,133 @@
+paths:
+  /api/products:
+    get:
+      summary: Get all products
+      tags:
+        - Products
+      responses:
+        "200":
+          description: All products
+        "500":
+          description: Server error
+        "400":
+          description: Some data is missing
+  /api/products/{id}:
+    get:
+      summary: Get product by id
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          description: Product identifier
+      responses:
+        "200":
+          description: One product found
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Products"
+              example:
+                id: 6538936ada4bdeef8f482bea
+        "500":
+          description: Server error
+        "400":
+          description: Some data is missing
+    put:
+      summary: Update product by id
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          description: Product identifier
+      requestBody:
+        content:
+          application/json:
+            schemas:
+              $ref: "#components/requestBodies/updateProduct"
+            example:
+              title: Smartphone Samsung Galaxy
+              price: 340000
+              stock: 15
+      responses:
+        "200":
+          description: Product updated
+          content:
+            application/json:
+              schemas:
+                $ref: "#components/schemas/Products"
+              example:
+                id: 65b71d4d82e13d511a03c477
+                title: Smartphone Samsung Galaxy S23
+                price: 445000
+                stock: 11
+        "500":
+          description: Server error
+        "400":
+          description: Some data is missing
+    /api/products/{id}:
+    delete:
+      summary: Delete product by id
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          description: Product identifier
+          required: true
+          schemas:
+                $ref: "#components/schemas/Products"
+                example:
+                id: 65b71d4d82e13d511a03c477
+      responses:
+        "204":
+          description: Product successfully deleted
+        "404":
+          description: Product not found
+        "500":
+          description: Server error
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        title:
+          type: string
+        price:
+          type: number
+        stock:
+          type: number
+        status:
+          type: boolean
+        description:
+          type: string
+        code:
+          type: string
+        thumbnails:
+          type: string
+        category:
+          type: string
+        owner:
+          type: string
+      example:
+        title: Smartphone Samsung Galaxy
+        price: 340000
+        stock: 15
+        status: true
+        description: 5 pulgadas color negro
+        code: abn158
+        thumbnails: ""
+        category: smartphone
+        owner: email@email.com
+  requestBodies:
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+        price:
+          type: number
+        stock:
+          type: number
