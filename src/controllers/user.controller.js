@@ -69,7 +69,7 @@ const sendmail= async(req,res)=>{
   user.save();
 
 
-  const resetUrl = `http://localhost:8080/restaurar`;
+  const resetUrl = `* https://entregafinal-production-7f74.up.railway.app/restaurar`;
   const mailOptions = {
     from: config.mail_reestablecer,
     // to: email,

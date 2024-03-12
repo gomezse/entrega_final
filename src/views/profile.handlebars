@@ -4,11 +4,11 @@
 
 <button><a href="/api/sessions/signout">Cerrar Sesión</a></button><br>
 {{!-- <a href="http://localhost:8080/documents">Ir a la carga de documentos</a> <br> --}}
-<a href='http://localhost:8080/api/users/premium/{{id}}'>Cambiar rol entre PREMIUM y USER</a> <br>
+<a href='https://entregafinal-production-7f74.up.railway.app/api/users/premium/{{id}}'>Cambiar rol entre PREMIUM y USER</a> <br>
 
 
 <h4>-------------------Gestion de productos------------------------</h4>
-<a href="http://localhost:8080/add-product">Agregar producto</a> <br>
+<a href="https://entregafinal-production-7f74.up.railway.app/add-product">Agregar producto</a> <br>
 <select name="select-update-product" id="select-update-product">
     {{#each products}}
     <option value="{{_id}}"> <b>{{title}} - Cod:{{code}}</b></option>
@@ -28,14 +28,14 @@
 {{#if isAdmin}}
 
 <h4>-------------------Usuarios------------------------</h4>
-<a href="http://localhost:8080/users">Listado de Usuarios</a> <br>
+<a href="https://entregafinal-production-7f74.up.railway.app/users">Listado de Usuarios</a> <br>
 {{/if}}
 
 
 
 <h4>-------------------Carrito/compra------------------------</h4>
 <button id="crearTicket" onclick="createTicket(`{{user.cart}}`)">Crear Ticket</button><br>
-<a href="http://localhost:8080/api/carts/{{user.cart}}">Ver Carrito</a> <br>
+<a href="https://entregafinal-production-7f74.up.railway.app/api/carts/{{user.cart}}">Ver Carrito</a> <br>
 
 {{#each products}}
 <p>TÍtulo:{{title}}</p>
@@ -78,7 +78,7 @@
             body: JSON.stringify(data)
         };
 
-        fetch(`http://localhost:8080/api/carts/${cid}/product/${pid}`, requestOptions)
+        fetch(`https://entregafinal-production-7f74.up.railway.app/api/carts/${cid}/product/${pid}`, requestOptions)
             .then(response => {
                 if (!response.ok) {
                     console.log(response);
@@ -112,7 +112,7 @@
             body: JSON.stringify(data)
         };
 
-        fetch(`http://localhost:8080/api/carts/${cid}/purchase`, requestOptions)
+        fetch(`https://entregafinal-production-7f74.up.railway.app/api/carts/${cid}/purchase`, requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error en el purchase.');
@@ -144,7 +144,7 @@
         const selectElement = document.getElementById("select-update-product");
         const selectedUid = selectElement.value;
         if (selectedUid) {
-            window.location.href = `http://localhost:8080/product/${selectedUid}`;
+            window.location.href = `https://entregafinal-production-7f74.up.railway.app/product/${selectedUid}`;
         } else {
             alert("Selecciona un producto para editar.");
         }
@@ -153,7 +153,7 @@
         const selectElement = document.getElementById("select-delete-product");
         const selectedUid = selectElement.value;
         if (selectedUid) {
-            window.location.href = `http://localhost:8080/delete-product/${selectedUid}`;
+            window.location.href = `https://entregafinal-production-7f74.up.railway.app/delete-product/${selectedUid}`;
         } else {
             alert("Selecciona un producto para eliminar.");
         }

@@ -11,9 +11,9 @@
 
 ## *Rutas Principales*
 
-* localhost:8080/signup
-* localhost:8080/login
-* localhost:8080/profile
+* https://entregafinal-production-7f74.up.railway.app/signup
+*  https://entregafinal-production-7f74.up.railway.app/login
+*  https://entregafinal-production-7f74.up.railway.app/profile
 
 ## *Flujo Natural de prueba de aplicación.*
 - Ingresar al "signup" y generar un nuevo usuario con el rol que se desee (ADMIN tiene acceso a la mayoría de las vistas y acciones).
