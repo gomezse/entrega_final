@@ -1,13 +1,13 @@
 
 # **Entrega final del proyecto.**
 >[!IMPORTANT]
->Ejecutar "npm i"
->Ejecutar "npm start" para correr la aplicación.(corre con nodemon)
+>* Ejecutar "npm i"
+>* Ejecutar "npm start" para correr la aplicación.(corre con nodemon)
 
 >[!TIP]
->Se recomienda crear al menos un usuario de tipo ADMIN para poder gestionar el resto de users, ya que este tiene acceso a la vista de Usuarios.
->El usuario de tipo ADMIN tambien puede cambiar los roles de otros usuarios.
->Prestar atención al mail que se setea a cada usuario ya que se utilizará para el envio de mail.
+>* Se recomienda crear al menos un usuario de tipo ADMIN para poder gestionar el resto de users, ya que este tiene acceso a la vista de Usuarios.
+>* El usuario de tipo ADMIN tambien puede cambiar los roles de otros usuarios.
+>* Prestar atención al mail que se setea a cada usuario ya que se utilizará para el envio de mail.
 
 ## *Rutas Principales*
 
