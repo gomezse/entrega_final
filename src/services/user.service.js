@@ -119,8 +119,8 @@ convertStringToDate(fechaStr){
  
   const mailOptions = {
     from: 'gomezsebastian909@gmail.com',
-    // to: email,
-    to: 'gomezsebastian909@gmail.com',
+    to: email,
+    // to: 'gomezsebastian909@gmail.com',
     subject: 'Usuario eliminado',
     html:msj,
   };

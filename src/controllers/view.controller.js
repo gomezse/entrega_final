@@ -158,7 +158,7 @@ const deleteProduct= async (req, res) => {
       
     
     const deletedProduct = productsManager.deleteOne(req.params.pid);
-    userService.sendMailDelete("<p>El producto perteneciente a un User Premium fue <b>ELIMINADO</b></p>","gomezsebastian909@gmail.com")
+    userService.sendMailDelete("<p>El producto perteneciente a un User Premium fue <b>ELIMINADO</b></p>",user.email?user.email:"gomezsebastian909@gmail.com")
     return res.status(200).json({message: 'Product deleted by PREMIUM',product:deletedProduct});        
 } 
 

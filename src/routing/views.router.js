@@ -21,7 +21,7 @@ router.get("/add-product",authMiddleware("PREMIUM"),viewRouter.addProduct);
 router.get("/product/:pid",viewRouter.updateProduct);
 router.get("/delete-product/:pid",authMiddleware("ADMIN,PREMIUM"),viewRouter.deleteProduct);
 router.get("/documents",viewRouter.documents);
-router.get("/users",viewRouter.users);
-router.get("/users/:uid",viewRouter.updateUser);
+router.get("/users",authMiddleware("ADMIN"),viewRouter.users);
+router.get("/users/:uid",authMiddleware("ADMIN"),viewRouter.updateUser);
 
 export default router;
