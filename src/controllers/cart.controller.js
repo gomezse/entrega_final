@@ -37,13 +37,11 @@ const getById=  async (req, res) => {
 
 const addProductToCart= async (req, res) => {
     const { cid, pid } = req.params;
-
     try {
         const user = jwt.verify(req.cookies.token, config.secretKeyJWT);
-        if (user.role == 'PREMIUM' && user.email != req.body.email){
+        if (user.role == 'PREMIUM' && (req.body.email?user.email != req.body.email:false)){
             return res.status(401).json({ message: 'You do not have permissions to add this product at cart' });
         }
-
         const newProduct = await cartsManager.addProductToCart(cid, pid);
         logger.info('Product added to cart', { cartId: cid, productId: pid });
         res.status(200).json({ message: 'Product added to cart', product: newProduct });
