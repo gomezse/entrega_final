@@ -1,0 +1,103 @@
+<button><a href="/profile">Volver al perfil</a></button>
+<br><br>
+
+<button onclick="deleteInactiveUsers()">Eliminar Usuarios Inactivos</button>
+<br><br>
+<h4>-------------------Editar Usuario------------------------</h4>
+<select name="select-user" id="select-user">
+{{#each users}}
+<option value="{{_id}}">Usuario <b>{{name}}</b></option>
+{{/each}}
+</select> 
+<button onclick="goModifyRol()">Editar</button>
+<br><br>
+<h4>-------------------Usuarios------------------------</h4>
+<br>
+{{#each users}}
+        <p>Nombre:{{name}}</p>
+        <p>Descripción:{{email}}</p>
+        <p>Tipo de cuenta: {{accountType}}</p>
+             
+        <button onclick="deleteUserFETCH('{{_id}}')">Eliminar {{name}}</button>
+
+        <p>---------------------------------------------------------</p>
+        <br>
+      
+    {{else}}
+        <p>No hay productos disponibles.</p>
+{{/each}}
+
+
+ <script>
+    function deleteUserFETCH(uid) {
+        const data = {
+          uid:uid
+        };
+
+        const requestOptions = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+
+        fetch(`http://localhost:8080/api/users/${uid}`, requestOptions)
+            .then(response => {
+           
+                if (!response.ok) {
+                    throw new Error('Hubo un problema con la petición.');
+                }
+ 
+                alert('Usuario eliminado con exito.');
+ 
+                setTimeout(() => {
+                    location.reload();
+                }, 1000); 
+            })
+            .catch(error => {
+                alert(`Error: ${error.message}`);
+            });
+    }
+
+     function deleteInactiveUsers() {
+
+
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        
+        };
+
+        fetch(`http://localhost:8080/api/users/deleteInactiveUsers`, requestOptions)
+            .then(response => {
+           
+                if (!response.ok) {
+                    if(response.status==400){return alert('No hay usuarios que eliminar');}
+                    throw new Error('Hubo un problema con la petición.',response.message);
+                }
+ 
+                alert('Usuarios eliminados con exito.');    
+ 
+                setTimeout(() => {
+                    location.reload();
+                }, 1000); 
+            })
+            .catch(error => {
+                alert(`Error: ${error.message}`);
+            });
+    }
+
+  function goModifyRol() {
+        const selectElement = document.getElementById("select-user");
+        const selectedUid = selectElement.value;
+        if (selectedUid) {
+            window.location.href = `http://localhost:8080/users/${selectedUid}`;
+        } else {
+            alert("Selecciona un usuario para editar su rol.");
+        }
+    }
+</script>

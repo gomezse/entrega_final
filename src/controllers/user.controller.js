@@ -1,9 +1,26 @@
 import { usersManager } from '../dao/models/mongoose/UsersManager.js';
 import {userService} from '../services/user.service.js';
+import mongoose from "mongoose";
 import crypto from 'crypto-browserify';
 import { ResetToken } from '../models/mongoose/resetToken.model.js';
 import {transporter} from "../utils/nodemailer.js";
 import config from "../utils/config.js";
+import CustomError from '../errors/error.generator.js';
+import { ErrorsMessages,ErrorsName } from '../errors/error.enum.js';
+
+const getAll= async(req,res)=>{
+  const {limit}=req.query;
+  const info = await userService.getAll(limit);
+    try{
+        if (!info) {
+            return res.status(200).json({ message: 'No users' });
+        }
+        res.status(200).json({ message: 'Users found', info });
+    } catch (error) {
+      // console.log(error);
+        CustomError.generateErrorMessage(ErrorsMessages.ERROR_INTERNAL,500,ErrorsName.ERROR_INTERNAL);        
+    }
+}
 
 const getUser = async (req, res) => {
   res.json({
@@ -16,6 +33,21 @@ const create =async (req, res) => {
   const user = req.body;
   const createdUser = await userService.create(user);
   res.json({ createdUser });
+}
+const deleteUser =async (req, res) => {
+  const {uid} = req.body;
+  if (!mongoose.Types.ObjectId.isValid(uid)) {
+    return res.status(400).json({ message: "Invalid ObjectId" });
+  }
+
+  const objectId =new  mongoose.Types.ObjectId(uid);
+
+  const user = await userService.findById(uid)
+  const deletedUser= await userService.delete(objectId,user);
+
+  if (!deletedUser){ res.status(400).json({ message:"User not deleted"});}
+
+  res.status(200).json({ deletedUser });
 }
 
 const sendmail= async(req,res)=>{
@@ -89,10 +121,31 @@ export const saveUserDocuments = async (req, res) => {
   res.json({ response });
 };
 
+
+export const deleteInactiveUsers = async (req, res) => {
+ 
+  const response = await userService.deleteInactiveUsers();
+  if(!response) return res.status(400).json({message:"No existen usuarios para eliminar"});
+  return res.status(200).json({message:"ok"});
+}
+
+export const updateUser = async (req, res) => {
+  const{email,role}=req.body;
+  const user = await userService.findByEmail(email);
+  if(!user)return res.status(400).json({message:"User not found"});
+  user.role = role;
+  await user.save();
+
+  return res.status(200).redirect("/users");
+}
 export const userController = {
+  "getAll":getAll,
   "getUser": getUser,
   "create":create,
   "sendmail":sendmail,
   "premium":premium,
-  "saveUserDocuments":saveUserDocuments
+  "saveUserDocuments":saveUserDocuments,
+  "delete":deleteUser,
+  "deleteInactiveUsers":deleteInactiveUsers,
+  "updateUser":updateUser
 };

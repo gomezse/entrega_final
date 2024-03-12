@@ -5,6 +5,7 @@ import { authMiddleware } from '../middlewares/auth.middleware.js';
 import upload from '../middlewares/multer.middleware.js';
 const router =new Router();
 
+router.get("/",userController.getAll);    
 router.get('/:idUser',jwtValidation,authMiddleware(["ADMIN"]),
     userController.getUser);
 
@@ -18,5 +19,8 @@ router.post("/:id/documents",upload.fields([
     ]),
     userController.saveUserDocuments
   );
+  router.delete("/:uid",authMiddleware("ADMIN"),userController.delete);
+  router.post("/deleteInactiveUsers",userController.deleteInactiveUsers);
+  router.post("/:uid",authMiddleware("ADMIN"),userController.updateUser);
   
 export default router;

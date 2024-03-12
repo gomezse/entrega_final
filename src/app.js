@@ -36,15 +36,15 @@ import swaggerUi from "swagger-ui-express";
 //configuracion del servidor
 const app = express();
 
-app.use(
-  session({
-     store: new MongoStore({
-      mongoUrl:config.mongoUrl,
-    }),
-    secret: "secretSession",
-    cookie: { maxAge: 90000 },
-  })
-);
+// app.use(
+//   session({
+//      store: new MongoStore({
+//       mongoUrl:config.mongoUrl,
+//     }),
+//     secret: "secretSession",
+//     cookie: { maxAge: 90000 },
+//   })
+// );
 
 
 

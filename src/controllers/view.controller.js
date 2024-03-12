@@ -1,6 +1,7 @@
 import { productsManager } from "../dao/models/mongoose/ProductsManager.js"
 import { cartsManager } from "../dao/models/mongoose/CartsManager.js";
 import { usersManager } from "../dao/models/mongoose/UsersManager.js";
+import { userService } from "../services/user.service.js";
 import config from "../utils/config.js";
 import jwt from "jsonwebtoken";
 import {logger} from "../utils/logger.js"
@@ -12,6 +13,7 @@ const chat =async (req, res) => {
   }
 
 
+
 const products = async (req, res) => {
     const products = await productsManager.findAll(req.query);
     const {payload,totalPages,page,nextLink,prevLink,hasNextPage,hasPrevPage}=products;
@@ -20,6 +22,11 @@ const products = async (req, res) => {
     res.render('home', { product : productsObject,page:page,next:nextLink,prev:prevLink,hasNext:hasNextPage,hasPrev:hasPrevPage,totalPages:totalPages });
   
   }
+
+const users = async (req, res) => {
+    const users = await userService.getAll(req.query); 
+    res.render('users',{users:users})
+}
 
 const cartId=  async (req, res) => {
     const {cid}=req.params;
@@ -38,7 +45,7 @@ const login = (req, res) => {
 
 const signup = (req, res) => {
     if (req.cookies.token) {
-        return res.redirect("/profile");
+        return res.redirect("/login");
     }
     res.render("signup");
 }
@@ -62,7 +69,11 @@ const profile = async (req, res) => {
     const userDB = await usersManager.findByEmail(user.email);
     const id = userDB._id;
     const productsObject = payload.map(product => product.toObject());
-    res.render("profile", { products: productsObject, user: req.user?req.user:user,id:id });
+
+    res.render("profile", { 
+        products: productsObject, 
+        user: req.user?req.user:user,id:id,
+        isAdmin:user.role=='ADMIN'?true:false });
 }
 
 const restaurar =  (req, res) => {
@@ -141,12 +152,13 @@ const deleteProduct= async (req, res) => {
         return res.status(200).json({message: 'Product deleted by ADMIN',product:deletedProduct});    
     } 
     
-    if(user.email != product.owner){
-        return res.status(401).json({ message: 'You do not have permissions to remove this product' });
-    } 
+    // if(user.email != product.owner){
+    //     return res.status(401).json({ message: 'You do not have permissions to remove this product' });
+    // } 
       
     
     const deletedProduct = productsManager.deleteOne(req.params.pid);
+    userService.sendMailDelete("<p>El producto perteneciente a un User Premium fue <b>ELIMINADO</b></p>","gomezsebastian909@gmail.com")
     return res.status(200).json({message: 'Product deleted by PREMIUM',product:deletedProduct});        
 } 
 
@@ -160,6 +172,15 @@ const documents = async (req, res) => {
     const userCompleto = await usersManager.findByEmail(user.email);
     
     res.render("documents", {id:userCompleto._id});
+}
+
+const updateUser = async (req, res) => {
+    const {uid} = req.params;
+
+    const user = await userService.findById(uid);
+    const userObj = user.toObject();
+    
+    res.render("user-update", {user:userObj});
 }
 export const viewRouter = {
     "chat":chat,
@@ -176,5 +197,7 @@ export const viewRouter = {
     "addProduct":addProduct,
     "updateProduct":updateProduct,
     "deleteProduct":deleteProduct,
-    "documents":documents
+    "documents":documents,
+    "users":users,
+    "updateUser":updateUser
 }

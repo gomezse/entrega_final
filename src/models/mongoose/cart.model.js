@@ -30,4 +30,4 @@ cartsSchema.pre('find',function(){
 
 cartsSchema.plugin(mongoosPaginate);
 
-export const cartsModel = mongoose.model("Carts", cartsSchema);
+export const cartsModel = mongoose.model("carts", cartsSchema);

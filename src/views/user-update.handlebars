@@ -1,0 +1,24 @@
+<h3>Update User</h3>
+<br>
+<button><a href="/users">Volver al listado de usuarios</a></button>
+<br>
+<form id="updateUserForm" action="http://localhost:8080/api/users/{{user._id}}" method="post">
+    <input type="hidden" name="id" id="id" value="{{user._id}}">
+     <input type="hidden" name="email" id="email" value="{{user.email}}">
+
+    Usuario: <h4>{{user.first_name}} - {{user.last_name}}</h4>
+    <br>
+    Email: <h4>{{user.email}}</h4>
+    <br>
+    Tipo de cuenta: <select name="role" id="role">
+                            <option value="ADMIN">Administrador</option>
+                            <option value="USER">Usuario</option>
+                            <option value="PREMIUM">Premium</option>
+                    </select>
+    <br><br>
+    <input type="submit" value="Modificar Tipo de Cuenta">
+
+</form>
+
+
+

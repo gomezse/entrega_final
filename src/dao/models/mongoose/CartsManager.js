@@ -52,7 +52,7 @@ class CartsManager {
     async addProductToCart(cartId, productId) {
         try {
             const cart = await cartsModel.findById(cartId);
-
+            console.log('cart ...',cart)
             const productIndex = cart.products.findIndex(
                 (p) => p.product._id.equals(productId)
             );

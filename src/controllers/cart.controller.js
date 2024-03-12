@@ -21,6 +21,7 @@ const getById=  async (req, res) => {
     const { cid } = req.params;
     try {
         const cart = await cartsManager.getCartById(cid);
+        console.log('Cart',cart);
         if (!cart) {
             logger.warn('Cart not found', { cartId: cid });
             CustomError.generateErrorMessage(ErrorsMessages.CART_NOT_FOUND,404,ErrorsName.CART_NOT_FOUND);        

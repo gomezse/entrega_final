@@ -85,7 +85,7 @@ const deleteProduct = async (req, res) => {
 
 const updateProduct =  async (req, res) => {
     const { pid } = req.params;
-
+    
     try {
         if(!req.body){res.status(400).json({ message: 'No attributes to update', product: {} });}
         
@@ -100,7 +100,7 @@ const updateProduct =  async (req, res) => {
             CustomError.generateErrorMessage(ErrorsMessages.PRODUCT_NOT_FOUND,404,ErrorsName.PRODUCT_NOT_FOUND);        
         }
     } catch (error) {                
-        res.status(500).json({ message: 'Product not updated', product: {} });        
+        res.status(500).json({ message: 'Product not updated', product: {},error:error });        
         // CustomError.generateErrorMessage(ErrorsMessages.ERROR_INTERNAL,500,ErrorsName.ERROR_INTERNAL);        
     }
 }

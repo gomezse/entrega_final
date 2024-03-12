@@ -1,52 +1,68 @@
-
 <h2>Bienvenido: {{user.last_name}} - {{user.first_name}}</h2>
 <h4>Tu email es: {{user.email}} </h4>
 <input type="hidden" name="" id="email_user" value="{{user.email}}">
 
-
-<a href="http://localhost:8080/documents">Ir a la carga de documentos</a> <br>
+<button><a href="/api/sessions/signout">Cerrar Sesión</a></button><br>
+{{!-- <a href="http://localhost:8080/documents">Ir a la carga de documentos</a> <br> --}}
 <a href='http://localhost:8080/api/users/premium/{{id}}'>Cambiar rol entre PREMIUM y USER</a> <br>
-{{!-- <a href="http://localhost:8080/api/users/sendmail">Reestablecer Contraseña</a> <br> --}}
-{{!-- <a id="sendMailButton" href="#">Reestablecer Contraseña</a> <br> --}}
-
-{{!-- <a href="http://localhost:8080/api/carts/{{user.cart}}">Ver Carrito</a> <br> --}}
-
-{{!-- <button id="crearTicket" onclick="createTicket(`{{user.cart}}`)">Crear Ticket</button> --}}
-
-{{!-- {{#if user.isAdmin}}
-    <h3>Rol:Admin</h3>
-{{else}}
-    <h3>Rol:User</h3>
-{{/if}} --}}
 
 
-{{!-- <h4>-------------------Productos------------------------</h4>
+<h4>-------------------Gestion de productos------------------------</h4>
+<a href="http://localhost:8080/add-product">Agregar producto</a> <br>
+<select name="select-update-product" id="select-update-product">
+    {{#each products}}
+    <option value="{{_id}}"> <b>{{title}} - Cod:{{code}}</b></option>
+    {{/each}}
+</select>
+<button onclick="goModifyProduct()">Editar Producto</button>
+<br><br>
+
+<select name="select-delete-product" id="select-delete-product">
+    {{#each products}}
+    <option value="{{_id}}"> <b>{{title}} - Cod:{{code}}</b></option>
+    {{/each}}
+</select>
+<button onclick="goDeleteProduct()">Eliminar producto</button>
+<br><br>
+
+{{#if isAdmin}}
+
+<h4>-------------------Usuarios------------------------</h4>
+<a href="http://localhost:8080/users">Listado de Usuarios</a> <br>
+{{/if}}
+
+
+
+<h4>-------------------Carrito/compra------------------------</h4>
+<button id="crearTicket" onclick="createTicket(`{{user.cart}}`)">Crear Ticket</button><br>
+<a href="http://localhost:8080/api/carts/{{user.cart}}">Ver Carrito</a> <br>
+
 {{#each products}}
-        <p>TÍtulo:{{title}}</p>
-        <p>Descripción:{{description}}</p>
-        <p>Código: {{code}}</p>
-        <p>Precio: $ {{price}}</p>
-        <p>Categoria: {{category}}</p>
-        <p>Stock: {{stock}}</p>        
-        <button onclick="addProductToCartFETCH('{{_id}}')">Agregar al carrito</button>
+<p>TÍtulo:{{title}}</p>
+<p>Descripción:{{description}}</p>
+<p>Código: {{code}}</p>
+<p>Precio: $ {{price}}</p>
+<p>Categoria: {{category}}</p>
+<p>Stock: {{stock}}</p>
+<button onclick="addProductToCartFETCH('{{_id}}')">Agregar al carrito</button>
 
-        <p>---------------------------------------------------------</p>
-        <br>
-      
-    {{else}}
-        <p>No hay productos disponibles.</p>
-{{/each}} --}}
+<p>---------------------------------------------------------</p>
+<br>
+
+{{else}}
+<p>No hay productos disponibles.</p>
+{{/each}}
 <br>
 <br>
 <input type="hidden" name="cid" id="cid" value="{{user.cart}}">
-<button><a href="/api/sessions/signout">Salir</a></button>
 
 
- <script>
+
+<script>
 
     function addProductToCartFETCH(pid) {
-      
-      const cid =document.getElementById('cid').value;
+
+        const cid = document.getElementById('cid').value;
         // Datos para enviar en la petición
         const data = {
             cid: cid,
@@ -65,14 +81,15 @@
         fetch(`http://localhost:8080/api/carts/${cid}/product/${pid}`, requestOptions)
             .then(response => {
                 if (!response.ok) {
+                    console.log(response);
                     throw new Error('Hubo un problema con la petición.');
                 }
- 
+
                 alert('Producto agregado al carrito.');
- 
+
                 setTimeout(() => {
                     location.reload();
-                }, 1000); 
+                }, 1000);
             })
             .catch(error => {
 
@@ -81,12 +98,12 @@
     }
 
 
-    function createTicket(cid){
-     
+    function createTicket(cid) {
+
         const data = {
-            cid: cid,         
+            cid: cid,
         };
-        
+
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -100,42 +117,45 @@
                 if (!response.ok) {
                     throw new Error('Error en el purchase.');
                 }
-       
+
                 alert('Ticket Generado.');
-                
+
                 return response.json();
             })
             .then(data => {
-                const productsString = data.data.products.map(product => {      
+                const productsString = data.data.products.map(product => {
 
-                return `Nombre: ${product.product.title}, Precio: ${product.product.price}, Cantidad: ${product.quantity}`;
-            }).join('\n');
+                    return `Nombre: ${product.product.title}, Precio: ${product.product.price}, Cantidad: ${product.quantity}`;
+                }).join('\n');
 
-            
-            const message = `----------------Ticket-------- \nProductos:\n${productsString}\nMonto Total: $${data.data.amount}`;
-            alert(message);
-            setTimeout(() => {
+
+                const message = `----------------Ticket-------- \nProductos:\n${productsString}\nMonto Total: $${data.data.amount}`;
+                alert(message);
+                setTimeout(() => {
                     location.reload();
-            }, 1000); 
-        })
+                }, 1000);
+            })
             .catch(error => {
                 alert(`Error: ${error.message}`);
             });
     }
 
-document.getElementById('sendMailButton').addEventListener('click', async function(event) {
-  event.preventDefault(); 
-
-
-  const email =  document.getElementById('email_user').value; 
-
-  const response = await fetch('http://localhost:8080/api/users/sendmail', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email }),
-  });
-});
-
+    function goModifyProduct() {
+        const selectElement = document.getElementById("select-update-product");
+        const selectedUid = selectElement.value;
+        if (selectedUid) {
+            window.location.href = `http://localhost:8080/product/${selectedUid}`;
+        } else {
+            alert("Selecciona un producto para editar.");
+        }
+    }
+    function goDeleteProduct() {
+        const selectElement = document.getElementById("select-delete-product");
+        const selectedUid = selectElement.value;
+        if (selectedUid) {
+            window.location.href = `http://localhost:8080/delete-product/${selectedUid}`;
+        } else {
+            alert("Selecciona un producto para eliminar.");
+        }
+    }
 </script>

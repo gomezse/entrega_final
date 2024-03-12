@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import { cartsManager } from "../../dao/models/mongoose/CartsManager.js";
+import { cartsModel } from "./cart.model.js";
+
 const newCart = await cartsManager.createCart();
 const usersSchema = new mongoose.Schema({
   first_name: {
@@ -64,4 +66,6 @@ usersSchema.pre("find", function () {
   this.populate("cart");
 });
 
+
 export const usersModel = mongoose.model("Users", usersSchema);
+

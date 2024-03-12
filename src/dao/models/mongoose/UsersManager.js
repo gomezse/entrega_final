@@ -25,6 +25,16 @@ class UsersManager {
     const response = await usersModel.findByIdAndUpdate(id,obj);
     return response;
   }
+
+  async findAll(limit=0) {  
+    try {
+        const users  = await usersModel.find().limit(limit);
+        return users;
+    } catch (error) {
+        return error;
+    }
+ 
+}
 }
 
 export const usersManager = new UsersManager();
