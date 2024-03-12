@@ -5,7 +5,7 @@ const router = Router();
 
 router.post("/",cartController.addCart);
 router.get("/:cid",cartController.getById);
-router.post("/:cid/product/:pid",authMiddleware("ADMIN","USER"), cartController.addProductToCart);
+router.post("/:cid/product/:pid",authMiddleware("PREMIUM","USER"), cartController.addProductToCart);
 router.delete("/:cid/products/:pid", cartController.deleteProduct);
 router.delete("/:cid",cartController.deleteAllProducts);
 router.put("/:cid/products/:pid",cartController.updateProductToCart);
