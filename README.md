@@ -23,7 +23,7 @@
 
 - Las subvistas principales cuentan con un botón de redirección al "perfil" para volver a gestionar las tareas.
 
-## *Observaciones"
+## *Observaciones*
 
 * Se utilizó patrón MVC como base del proyecto.
 * Se utilizó el patrón DTO  para la vista de usuarios (con el fin de cuidar datos sensibles).
